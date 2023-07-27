@@ -1,23 +1,17 @@
-import Head from 'next/head'
+import Head from "next/head";
 
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
-const Hero = dynamic(
-  () => import('content/Hero').then((mod) => mod.Hero),
-  {
-    ssr: true,
-  }
-);
+const Hero = dynamic(() => import("content/Hero").then((mod) => mod.Hero), {
+  ssr: true,
+});
 
-const Search = dynamic(
-  () => import('shop/Search').then((mod) => mod.Search),
-  {
-    ssr: true,
-  }
-);
+const Search = dynamic(() => import("shop/Search").then((mod) => mod.Search), {
+  ssr: true,
+});
 
 const Featured = dynamic(
-  () => import('shop/Featured').then((mod) => mod.Featured),
+  () => import("shop/Featured").then((mod) => mod.Featured),
   {
     ssr: true,
   }
@@ -33,18 +27,17 @@ export function Home({ heroProps, featuredProps }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Hero {...heroProps} />
         <Search />
         <Featured {...featuredProps} />
       </main>
     </>
-  )
+  );
 }
 
 export const getServerSideProps = async (ctx) => {
   const [hero, featured] = await Promise.all([
-    import('content/Hero'),
-    import('shop/Featured'),
+    import("content/Hero"),
+    import("shop/Featured"),
   ]);
 
   if (hero.getServerSideProps && featured.getServerSideProps) {
@@ -56,13 +49,13 @@ export const getServerSideProps = async (ctx) => {
       props: {
         heroProps: heroProps.props,
         featuredProps: featuredProps.props,
-      }
-    }
+      },
+    };
   }
 
   return {
     props: {},
-  }
-}
+  };
+};
 
 export default Home;
